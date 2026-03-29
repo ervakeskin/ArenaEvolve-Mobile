@@ -24,7 +24,7 @@ function AttributeBar({ label, value, max, color, delayMs = 0 }: AttributeProps)
   }, [value, max, delayMs]);
 
   const animatedProgressStyle = useAnimatedStyle(() => ({
-    width: `${progress.value * 100}%`,
+    width: ((progress.value * 100) + '%') as any,
   }));
 
   const animatedOpacityStyle = useAnimatedStyle(() => ({

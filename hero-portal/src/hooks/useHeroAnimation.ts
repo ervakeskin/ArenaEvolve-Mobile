@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSharedValue, useAnimatedStyle, withRepeat, withTiming, withSequence, Easing, withSpring } from 'react-native-reanimated';
+import { useSharedValue, useAnimatedStyle, withRepeat, withTiming, withSequence, Easing, withSpring, withDelay } from 'react-native-reanimated';
 
 export function useHeroIdleAnimation() {
   const translateY = useSharedValue(0);
@@ -62,10 +62,8 @@ export function useMountAnimation(delayMs = 0) {
   const translateY = useSharedValue(20);
 
   useEffect(() => {
-    setTimeout(() => {
-      opacity.value = withTiming(1, { duration: 600 });
-      translateY.value = withSpring(0, { damping: 12, stiffness: 90 });
-    }, delayMs);
+    opacity.value = withDelay(delayMs, withTiming(1, { duration: 600 }));
+    translateY.value = withDelay(delayMs, withSpring(0, { damping: 12, stiffness: 90 }));
   }, [delayMs]);
 
   const animatedStyle = useAnimatedStyle(() => {
