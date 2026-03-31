@@ -32,19 +32,18 @@ function AttributeBar({ label, value, max, color, delayMs = 0 }: AttributeProps)
   }));
 
   return (
-    <Animated.View style={animatedOpacityStyle} className="mb-3">
-      <View className="flex-row justify-between mb-1">
-        <Text className="text-white text-xs font-space font-medium tracking-widest uppercase">
+    <Animated.View style={[animatedOpacityStyle, styles.attributeItem]}>
+      <View style={styles.rowBetween}>
+        <Text style={styles.attributeLabel}>
           {label}
         </Text>
-        <Text style={{ color, textShadowColor: color, textShadowOffset: {width: 0, height: 0}, textShadowRadius: 6 }} className="text-xs font-space font-bold">
+        <Text style={[styles.attributeValue, { color, textShadowColor: color }]}>
           {value}
         </Text>
       </View>
-      <View className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+      <View style={styles.track}>
         <Animated.View 
-          style={[{ backgroundColor: color }, animatedProgressStyle, styles.glowShadow]} 
-          className="h-full rounded-full"
+          style={[{ backgroundColor: color }, animatedProgressStyle, styles.glowShadow, styles.fill]}
         />
       </View>
     </Animated.View>
@@ -53,7 +52,7 @@ function AttributeBar({ label, value, max, color, delayMs = 0 }: AttributeProps)
 
 export function AttributeBars() {
   return (
-    <View className="px-4 py-2 w-full mt-4">
+    <View style={styles.container}>
       <AttributeBar label="Offense" value={85} max={100} color={colors.arcanePurple} delayMs={100} />
       <AttributeBar label="Magic" value={98} max={100} color={colors.neonCyan} delayMs={200} />
       <AttributeBar label="Defense" value={45} max={100} color={colors.legendaryGold} delayMs={300} />
@@ -63,6 +62,43 @@ export function AttributeBars() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    width: '100%',
+    marginTop: 16,
+  },
+  attributeItem: {
+    marginBottom: 12,
+  },
+  rowBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  attributeLabel: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: '500',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+  },
+  attributeValue: {
+    fontSize: 12,
+    fontWeight: '700',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 6,
+  },
+  track: {
+    height: 6,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 999,
+    overflow: 'hidden',
+  },
+  fill: {
+    height: '100%',
+    borderRadius: 999,
+  },
   glowShadow: {
     shadowColor: colors.neonCyan,
     shadowOffset: { width: 0, height: 0 },

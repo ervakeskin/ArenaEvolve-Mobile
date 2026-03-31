@@ -2,54 +2,63 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Shield, Sparkles } from 'lucide-react-native';
+import { Shield } from 'lucide-react-native';
 import { colors } from '../theme/colors';
 import { useHeroIdleAnimation } from '../hooks/useHeroAnimation';
 import { GlassPanel } from './GlassPanel';
 
-export function HeroCard() {
+export interface HeroProfile {
+  name: string;
+  role: string;
+  level: number;
+  rarity: string;
+  accentColor: string;
+  emblem: string;
+}
+
+interface HeroCardProps {
+  hero: HeroProfile;
+}
+
+export function HeroCard({ hero }: HeroCardProps) {
   const { animatedStyle } = useHeroIdleAnimation();
 
   return (
-    <View className="items-center justify-center flex-1 w-full relative">
+    <View style={styles.root}>
       <Animated.View style={[styles.heroContainer, animatedStyle]}>
-        {/* Mock image container since we don't have a real asset */}
-        <View className="w-80 h-[450px] items-center justify-center relative">
+        <View style={styles.visualContainer}>
           <LinearGradient
-            colors={['transparent', 'rgba(139, 92, 246, 0.2)', 'transparent']}
-            className="absolute inset-0 rounded-full"
+            colors={['transparent', `${hero.accentColor}44`, 'transparent']}
+            style={styles.ambientAura}
           />
           <LinearGradient
             colors={['rgba(8, 16, 36, 0)', 'rgba(8, 16, 36, 1)']}
-            className="absolute bottom-0 w-full h-32"
+            style={styles.bottomFade}
           />
-          {/* We will just show a silhouette like placeholder */}
-          <View className="w-64 h-96 bg-white/5 rounded-[40px] items-center justify-center border border-white/10 shadow-lg" style={styles.imageGlow}>
-            <Sparkles stroke={colors.arcanePurple} size={48} />
+          <View style={[styles.silhouetteCard, styles.imageGlow]}>
+            <Text style={[styles.heroEmblem, { color: hero.accentColor }]}>{hero.emblem}</Text>
           </View>
         </View>
 
-        {/* Hero Info Overlay */}
-        <View className="absolute bottom-10 items-center justify-center w-full px-6">
-          <GlassPanel intensity={50} className="px-6 py-2 rounded-full flex-row items-center mb-4">
-            <Sparkles stroke={colors.legendaryGold} size={16} fill={colors.legendaryGold} />
-            <Text className="text-legendaryGold font-space font-bold ml-2 tracking-widest uppercase text-xs">
-              Legendary
+        <View style={styles.infoOverlay}>
+          <GlassPanel intensity={50} style={styles.badgePanel}>
+            <Text style={styles.badgeText}>
+              {hero.rarity}
             </Text>
           </GlassPanel>
           
           <Text style={[styles.heroName, styles.textGlow]}>
-            SHADOW EMPRESS
+            {hero.name}
           </Text>
 
-          <View className="flex-row items-center mt-3 space-x-4">
-            <View className="flex-row items-center">
-              <Shield stroke={colors.neonCyan} size={14} />
-              <Text className="text-neonCyan ml-1.5 font-space font-bold uppercase text-xs">Mage / Assassin</Text>
+          <View style={styles.roleRow}>
+            <View style={styles.roleInfo}>
+              <Shield stroke={hero.accentColor} size={14} />
+              <Text style={[styles.roleText, { color: hero.accentColor }]}>{hero.role}</Text>
             </View>
-            <View className="h-4 w-px bg-white/20 mx-3" />
-            <View className="bg-white/10 px-2.5 py-1 rounded flex-row items-center border border-white/20">
-              <Text className="text-white font-space font-bold text-xs uppercase">LVL 30</Text>
+            <View style={styles.divider} />
+            <View style={styles.levelPill}>
+              <Text style={styles.levelText}>LVL {hero.level}</Text>
             </View>
           </View>
         </View>
@@ -59,9 +68,77 @@ export function HeroCard() {
 }
 
 const styles = StyleSheet.create({
+  root: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    width: '100%',
+    position: 'relative',
+  },
   heroContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+  },
+  visualContainer: {
+    width: 320,
+    height: 450,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  ambientAura: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    borderRadius: 180,
+  },
+  bottomFade: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 128,
+  },
+  silhouetteCard: {
+    width: 256,
+    height: 384,
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+  },
+  heroEmblem: {
+    fontSize: 68,
+    fontWeight: '900',
+    textShadowColor: 'rgba(0,0,0,0.4)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 8,
+  },
+  infoOverlay: {
+    position: 'absolute',
+    bottom: 40,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+  },
+  badgePanel: {
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    borderRadius: 999,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  badgeText: {
+    marginLeft: 8,
+    color: colors.legendaryGold,
+    fontWeight: '700',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+    fontSize: 11,
   },
   heroName: {
     fontFamily: 'Space Grotesk',
@@ -82,5 +159,41 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.6,
     shadowRadius: 30,
     elevation: 20,
-  }
+  },
+  roleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  roleInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  roleText: {
+    color: colors.neonCyan,
+    marginLeft: 6,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    fontSize: 11,
+  },
+  divider: {
+    height: 16,
+    width: 1,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginHorizontal: 12,
+  },
+  levelPill: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
+  },
+  levelText: {
+    color: colors.white,
+    fontWeight: '700',
+    fontSize: 11,
+    textTransform: 'uppercase',
+  },
 });

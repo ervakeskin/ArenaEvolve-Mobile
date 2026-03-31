@@ -26,31 +26,26 @@ export function CurrencyBar() {
   }));
 
   return (
-    <View className="flex-row items-center justify-between px-4 py-2 mt-2 w-full">
-      {/* Back Button */}
-      <AnimatedPressable className="relative w-12 h-12 items-center justify-center">
+    <View style={styles.container}>
+      <AnimatedPressable style={styles.backButton}>
         <Animated.View style={[styles.backGlow, animatedGlowStyle]} />
-        <GlassPanel intensity={30} className="w-10 h-10 rounded-full items-center justify-center">
+        <GlassPanel intensity={30} style={styles.iconPanel}>
           <ChevronLeft stroke={colors.neonCyan} size={24} />
         </GlassPanel>
       </AnimatedPressable>
 
-      {/* Currency Pills */}
-      <View className="flex-row items-center space-x-3">
-        {/* Diamond Pill */}
-        <GlassPanel intensity={40} className="flex-row items-center px-3 py-1.5 rounded-full border border-arcanePurple/30">
+      <View style={styles.currencyRow}>
+        <GlassPanel intensity={40} style={styles.diamondPill}>
           <Diamond stroke={colors.neonCyan} size={16} fill={colors.neonCyan} />
-          <Text className="text-white font-bold ml-1.5 font-space">1,250</Text>
+          <Text style={styles.pillText}>1,250</Text>
         </GlassPanel>
 
-        {/* Gold Pill */}
-        <GlassPanel intensity={40} className="flex-row items-center px-3 py-1.5 rounded-full border border-legendaryGold/30 ml-2">
+        <GlassPanel intensity={40} style={styles.goldPill}>
           <Coins stroke={colors.legendaryGold} size={16} />
-          <Text className="text-white font-bold ml-1.5 font-space">24,500</Text>
+          <Text style={styles.pillText}>24,500</Text>
         </GlassPanel>
 
-        {/* Settings */}
-        <Pressable className="ml-2 w-10 h-10 items-center justify-center">
+        <Pressable style={styles.settingsButton}>
           <Settings stroke={colors.textSecondary} size={22} />
         </Pressable>
       </View>
@@ -59,6 +54,64 @@ export function CurrencyBar() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginTop: 8,
+    width: '100%',
+  },
+  backButton: {
+    position: 'relative',
+    width: 48,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconPanel: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  currencyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  diamondPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(139,92,246,0.3)',
+  },
+  goldPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(255,215,0,0.3)',
+    marginLeft: 8,
+  },
+  pillText: {
+    color: colors.white,
+    fontWeight: '700',
+    marginLeft: 6,
+  },
+  settingsButton: {
+    marginLeft: 8,
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   backGlow: {
     position: 'absolute',
     width: 32,

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Text, Pressable, StyleSheet } from 'react-native';
+import { Text, Pressable, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import Animated, { 
   useAnimatedStyle, 
   useSharedValue, 
@@ -16,9 +16,10 @@ interface NeonButtonProps {
   onPress: () => void;
   variant?: 'primary' | 'secondary';
   className?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
-export function NeonButton({ title, onPress, variant = 'primary', className = '' }: NeonButtonProps) {
+export function NeonButton({ title, onPress, variant = 'primary', className = '', style }: NeonButtonProps) {
   const scale = useSharedValue(1);
   const opacity = useSharedValue(1);
 
@@ -52,6 +53,7 @@ export function NeonButton({ title, onPress, variant = 'primary', className = ''
       style={[
         styles.base,
         variant === 'primary' ? styles.primary : styles.secondary,
+        style,
         animatedStyle,
       ]}
       className={className}

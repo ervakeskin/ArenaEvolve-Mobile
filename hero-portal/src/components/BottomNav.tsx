@@ -5,6 +5,8 @@ import { GlassPanel } from './GlassPanel';
 import { colors } from '../theme/colors';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming, withSequence, Easing } from 'react-native-reanimated';
 
+export type NavTab = 'Home' | 'Heroes' | 'Ranked' | 'Profile';
+
 interface TabItemProps {
   label: string;
   icon: React.ReactNode;
@@ -34,15 +36,13 @@ function TabItem({ label, icon, isActive = false, onPress }: TabItemProps) {
   };
 
   return (
-    <Pressable onPressIn={handlePressIn} onPress={onPress} className="items-center justify-center flex-1 py-3">
-      <Animated.View style={animatedStyle} className="items-center justify-center relative">
+    <Pressable onPressIn={handlePressIn} onPress={onPress} style={styles.tabItem}>
+      <Animated.View style={[animatedStyle, styles.tabInner]}>
         {isActive && (
           <View style={styles.activeGlow} />
         )}
         {icon}
-        <Text 
-          className={`text-[10px] mt-1 font-space uppercase tracking-wider ${isActive ? 'text-neonCyan font-bold' : 'text-textSecondary'}`}
-        >
+        <Text style={[styles.tabText, isActive ? styles.activeText : styles.inactiveText]}>
           {label}
         </Text>
       </Animated.View>
@@ -50,35 +50,39 @@ function TabItem({ label, icon, isActive = false, onPress }: TabItemProps) {
   );
 }
 
-export function BottomNav() {
-  const [activeTab, setActiveTab] = React.useState('Heroes');
+interface BottomNavProps {
+  activeTab: NavTab;
+  onTabChange: (tab: NavTab) => void;
+}
+
+export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
 
   return (
-    <View className="absolute bottom-6 left-4 right-4 z-50">
-      <GlassPanel intensity={40} className="flex-row items-center justify-between rounded-full border border-white/10 overflow-visible px-2">
+    <View style={styles.navContainer}>
+      <GlassPanel intensity={40} style={styles.navPanel}>
         <TabItem 
           label="Home" 
           icon={<Home stroke={activeTab === 'Home' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Home'}
-          onPress={() => setActiveTab('Home')}
+          onPress={() => onTabChange('Home')}
         />
         <TabItem 
           label="Heroes" 
           icon={<Users stroke={activeTab === 'Heroes' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Heroes'}
-          onPress={() => setActiveTab('Heroes')}
+          onPress={() => onTabChange('Heroes')}
         />
         <TabItem 
           label="Ranked" 
           icon={<Trophy stroke={activeTab === 'Ranked' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Ranked'}
-          onPress={() => setActiveTab('Ranked')}
+          onPress={() => onTabChange('Ranked')}
         />
         <TabItem 
           label="Profile" 
           icon={<User stroke={activeTab === 'Profile' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Profile'}
-          onPress={() => setActiveTab('Profile')}
+          onPress={() => onTabChange('Profile')}
         />
       </GlassPanel>
     </View>
@@ -86,6 +90,47 @@ export function BottomNav() {
 }
 
 const styles = StyleSheet.create({
+  navContainer: {
+    position: 'absolute',
+    bottom: 24,
+    left: 16,
+    right: 16,
+    zIndex: 50,
+  },
+  navPanel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    overflow: 'visible',
+    paddingHorizontal: 8,
+  },
+  tabItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+  },
+  tabInner: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  tabText: {
+    fontSize: 10,
+    marginTop: 4,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  activeText: {
+    color: colors.neonCyan,
+    fontWeight: '700',
+  },
+  inactiveText: {
+    color: colors.textSecondary,
+  },
   activeGlow: {
     position: 'absolute',
     top: 0,

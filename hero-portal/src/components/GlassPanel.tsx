@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewProps } from 'react-native';
+import { View, StyleSheet, ViewProps, StyleProp, ViewStyle } from 'react-native';
 import { BlurView } from 'expo-blur';
 import Animated from 'react-native-reanimated';
 
@@ -9,6 +9,7 @@ interface GlassPanelProps extends ViewProps {
   className?: string; // for NativeWind
   blurTint?: 'light' | 'dark' | 'default';
   animatedStyle?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
@@ -19,13 +20,14 @@ export function GlassPanel({
   className = '',
   blurTint = 'dark',
   animatedStyle,
+  style,
   ...rest
 }: GlassPanelProps) {
   return (
     <AnimatedBlurView
       intensity={intensity}
       tint={blurTint}
-      style={[styles.container, animatedStyle]}
+      style={[styles.container, animatedStyle, style]}
       className={`rounded-xl overflow-hidden ${className}`}
       {...rest}
     >
