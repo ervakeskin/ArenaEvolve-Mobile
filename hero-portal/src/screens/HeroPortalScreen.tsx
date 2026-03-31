@@ -16,7 +16,15 @@ import { useMountAnimation } from '../hooks/useHeroAnimation';
 import { colors } from '../theme/colors';
 
 // Simple Floating Particle
-function Particle({ delay, initX, initY, size, duration }: any) {
+interface ParticleProps {
+  delay: number;
+  initX: number | `${number}%`;
+  initY: number;
+  size: number;
+  duration: number;
+}
+
+function Particle({ delay, initX, initY, size, duration }: ParticleProps) {
   const translateY = useSharedValue(initY);
   const opacity = useSharedValue(0);
 

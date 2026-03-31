@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, Pressable, StyleSheet, View } from 'react-native';
+import React, { useCallback } from 'react';
+import { Text, Pressable, StyleSheet } from 'react-native';
 import Animated, { 
   useAnimatedStyle, 
   useSharedValue, 
@@ -27,20 +27,26 @@ export function NeonButton({ title, onPress, variant = 'primary', className = ''
     opacity: opacity.value,
   }));
 
-  const handlePressIn = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  const handlePressIn = useCallback(() => {
+    void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {
+      // Haptics can fail on unsupported environments; keep button responsive.
+    });
     scale.value = withSpring(0.95, { damping: 10, stiffness: 200 });
     opacity.value = withTiming(0.8, { duration: 100 });
-  };
+  }, [opacity, scale]);
 
-  const handlePressOut = () => {
+  const handlePressOut = useCallback(() => {
     scale.value = withSpring(1, { damping: 10, stiffness: 200 });
     opacity.value = withTiming(1, { duration: 100 });
-  };
+  }, [opacity, scale]);
+
+  const handlePress = useCallback(() => {
+    onPress();
+  }, [onPress]);
 
   return (
     <AnimatedPressable
-      onPress={onPress}
+      onPress={handlePress}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       style={[

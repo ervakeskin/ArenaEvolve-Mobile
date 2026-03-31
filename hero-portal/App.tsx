@@ -1,4 +1,3 @@
-import 'react-native-reanimated'; // Needed for Reanimated v3
 import "./global.css";
 
 import React from 'react';

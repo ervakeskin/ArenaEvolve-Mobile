@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Shield, Sparkles } from 'lucide-react-native';
@@ -25,14 +25,14 @@ export function HeroCard() {
           />
           {/* We will just show a silhouette like placeholder */}
           <View className="w-64 h-96 bg-white/5 rounded-[40px] items-center justify-center border border-white/10 shadow-lg" style={styles.imageGlow}>
-            <Sparkles color={colors.arcanePurple} size={48} />
+            <Sparkles stroke={colors.arcanePurple} size={48} />
           </View>
         </View>
 
         {/* Hero Info Overlay */}
         <View className="absolute bottom-10 items-center justify-center w-full px-6">
           <GlassPanel intensity={50} className="px-6 py-2 rounded-full flex-row items-center mb-4">
-            <Sparkles color={colors.legendaryGold} size={16} fill={colors.legendaryGold} />
+            <Sparkles stroke={colors.legendaryGold} size={16} fill={colors.legendaryGold} />
             <Text className="text-legendaryGold font-space font-bold ml-2 tracking-widest uppercase text-xs">
               Legendary
             </Text>
@@ -44,7 +44,7 @@ export function HeroCard() {
 
           <View className="flex-row items-center mt-3 space-x-4">
             <View className="flex-row items-center">
-              <Shield color={colors.neonCyan} size={14} />
+              <Shield stroke={colors.neonCyan} size={14} />
               <Text className="text-neonCyan ml-1.5 font-space font-bold uppercase text-xs">Mage / Assassin</Text>
             </View>
             <View className="h-4 w-px bg-white/20 mx-3" />

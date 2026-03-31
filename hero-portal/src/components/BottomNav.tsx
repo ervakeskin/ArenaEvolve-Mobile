@@ -58,25 +58,25 @@ export function BottomNav() {
       <GlassPanel intensity={40} className="flex-row items-center justify-between rounded-full border border-white/10 overflow-visible px-2">
         <TabItem 
           label="Home" 
-          icon={<Home color={activeTab === 'Home' ? colors.neonCyan : colors.textSecondary} size={22} />} 
+          icon={<Home stroke={activeTab === 'Home' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Home'}
           onPress={() => setActiveTab('Home')}
         />
         <TabItem 
           label="Heroes" 
-          icon={<Users color={activeTab === 'Heroes' ? colors.neonCyan : colors.textSecondary} size={22} />} 
+          icon={<Users stroke={activeTab === 'Heroes' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Heroes'}
           onPress={() => setActiveTab('Heroes')}
         />
         <TabItem 
           label="Ranked" 
-          icon={<Trophy color={activeTab === 'Ranked' ? colors.neonCyan : colors.textSecondary} size={22} />} 
+          icon={<Trophy stroke={activeTab === 'Ranked' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Ranked'}
           onPress={() => setActiveTab('Ranked')}
         />
         <TabItem 
           label="Profile" 
-          icon={<User color={activeTab === 'Profile' ? colors.neonCyan : colors.textSecondary} size={22} />} 
+          icon={<User stroke={activeTab === 'Profile' ? colors.neonCyan : colors.textSecondary} size={22} />} 
           isActive={activeTab === 'Profile'}
           onPress={() => setActiveTab('Profile')}
         />

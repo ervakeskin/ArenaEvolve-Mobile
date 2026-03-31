@@ -9,10 +9,10 @@ interface SkillNodeProps {
   icon: React.ReactNode;
   level: number;
   isUltimate?: boolean;
-  onLongPress: () => void;
+  onTrigger: () => void;
 }
 
-function SkillNode({ icon, level, isUltimate = false, onLongPress }: SkillNodeProps) {
+function SkillNode({ icon, level, isUltimate = false, onTrigger }: SkillNodeProps) {
   const glowOpacity = useSharedValue(0.5);
 
   React.useEffect(() => {
@@ -33,7 +33,12 @@ function SkillNode({ icon, level, isUltimate = false, onLongPress }: SkillNodePr
   }));
 
   return (
-    <Pressable onLongPress={onLongPress} delayLongPress={200} className="items-center justify-center relative mx-2">
+    <Pressable
+      onPress={onTrigger}
+      onLongPress={onTrigger}
+      delayLongPress={200}
+      className="items-center justify-center relative mx-2"
+    >
       {isUltimate && (
         <Animated.View style={[styles.ultimateGlow, animatedGlowStyle]} />
       )}
@@ -53,18 +58,46 @@ function SkillNode({ icon, level, isUltimate = false, onLongPress }: SkillNodePr
 }
 
 export function AbilityWheel() {
-  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+  const [selectedSkill, setSelectedSkill] = useState<AbilityKey | null>(null);
+
+  const abilities: Record<AbilityKey, { label: string; description: string; cooldown: string; mana: number }> = {
+    phantomStrike: {
+      label: 'Phantom Strike',
+      description: 'Deals heavy magic damage and briefly marks the target.',
+      cooldown: '8s',
+      mana: 45,
+    },
+    voidDash: {
+      label: 'Void Dash',
+      description: 'Dashes through enemies and grants short burst movement speed.',
+      cooldown: '10s',
+      mana: 40,
+    },
+    arcaneOverload: {
+      label: 'Arcane Overload',
+      description: 'Charges and releases a ranged blast that pierces minions.',
+      cooldown: '12s',
+      mana: 60,
+    },
+    empressWrath: {
+      label: "EMPRESS' WRATH",
+      description: 'Summons a void entity that silences enemies for 1.5s.',
+      cooldown: '24s',
+      mana: 100,
+    },
+  };
 
   const renderTooltip = () => {
     if (!selectedSkill) return null;
+    const skill = abilities[selectedSkill];
     return (
       <Modal visible transparent animationType="fade">
         <Pressable style={styles.modalOverlay} onPress={() => setSelectedSkill(null)}>
           <GlassPanel intensity={80} className="w-3/4 p-6 border border-white/20">
-            <Text className="text-neonCyan font-space font-bold text-lg mb-2 uppercase">{selectedSkill}</Text>
+            <Text className="text-neonCyan font-space font-bold text-lg mb-2 uppercase">{skill.label}</Text>
             <Text className="text-white/80 font-space text-sm leading-relaxed">
-              Deals heavy magic damage and summons a void entity that silences enemies for 1.5s.
-              {"\n\n"}Cooldown: 12s | Cost: 60 Mana
+              {skill.description}
+              {"\n\n"}Cooldown: {skill.cooldown} | Cost: {skill.mana} Mana
             </Text>
           </GlassPanel>
         </Pressable>
@@ -77,28 +110,30 @@ export function AbilityWheel() {
       <SkillNode 
         icon={<Flame color={colors.textSecondary} size={24} />} 
         level={3} 
-        onLongPress={() => setSelectedSkill("Phantom Strike")} 
+        onTrigger={() => setSelectedSkill('phantomStrike')} 
       />
       <SkillNode 
         icon={<Wind color={colors.textSecondary} size={24} />} 
         level={2} 
-        onLongPress={() => setSelectedSkill("Void Dash")} 
+        onTrigger={() => setSelectedSkill('voidDash')} 
       />
       <SkillNode 
         icon={<Zap color={colors.textSecondary} size={24} />} 
         level={4} 
-        onLongPress={() => setSelectedSkill("Arcane Overload")} 
+        onTrigger={() => setSelectedSkill('arcaneOverload')} 
       />
       <SkillNode 
         icon={<Skull color={colors.legendaryGold} size={28} />} 
         level={3} 
         isUltimate 
-        onLongPress={() => setSelectedSkill("EMPRESS' WRATH")} 
+        onTrigger={() => setSelectedSkill('empressWrath')} 
       />
       {renderTooltip()}
     </View>
   );
 }
+
+type AbilityKey = 'phantomStrike' | 'voidDash' | 'arcaneOverload' | 'empressWrath';
 
 const styles = StyleSheet.create({
   ultimateGlow: {

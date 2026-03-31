@@ -31,7 +31,7 @@ export function CurrencyBar() {
       <AnimatedPressable className="relative w-12 h-12 items-center justify-center">
         <Animated.View style={[styles.backGlow, animatedGlowStyle]} />
         <GlassPanel intensity={30} className="w-10 h-10 rounded-full items-center justify-center">
-          <ChevronLeft color={colors.neonCyan} size={24} />
+          <ChevronLeft stroke={colors.neonCyan} size={24} />
         </GlassPanel>
       </AnimatedPressable>
 
@@ -39,19 +39,19 @@ export function CurrencyBar() {
       <View className="flex-row items-center space-x-3">
         {/* Diamond Pill */}
         <GlassPanel intensity={40} className="flex-row items-center px-3 py-1.5 rounded-full border border-arcanePurple/30">
-          <Diamond color={colors.neonCyan} size={16} fill={colors.neonCyan} />
+          <Diamond stroke={colors.neonCyan} size={16} fill={colors.neonCyan} />
           <Text className="text-white font-bold ml-1.5 font-space">1,250</Text>
         </GlassPanel>
 
         {/* Gold Pill */}
         <GlassPanel intensity={40} className="flex-row items-center px-3 py-1.5 rounded-full border border-legendaryGold/30 ml-2">
-          <Coins color={colors.legendaryGold} size={16} />
+          <Coins stroke={colors.legendaryGold} size={16} />
           <Text className="text-white font-bold ml-1.5 font-space">24,500</Text>
         </GlassPanel>
 
         {/* Settings */}
         <Pressable className="ml-2 w-10 h-10 items-center justify-center">
-          <Settings color={colors.textSecondary} size={22} />
+          <Settings stroke={colors.textSecondary} size={22} />
         </Pressable>
       </View>
     </View>
